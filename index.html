@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Gsme</title>
+</head>
+<body>
+    <canvas id="stage" width="600" height="600"></canvas>
+    <script>
+        window.onload = function(){
+
+            let stage = document.querySelector(`canvas#stage`)
+            let ctx = stage.getContext("2d")
+            document.addEventListener("keydown", keyPush)
+
+            setInterval(game, 70)//intervalo de atualizacao do game
+            
+            const vel = 1
+
+            let vx = vy = 0 //velocide inicial
+            let px = 10//posicao da cabeca da cobra
+            let py = 15
+            let lp = 20 //length da peca
+            let qp = 30 // quantidade da peca
+            let ax = ay = 15//maca onde inicia
+
+            let trail = []
+            tail = 5
+        
+            function game(){
+
+                px += vx
+                py += vy
+                if (px < 0){
+                    px = qp - 1
+                }
+                if (px > qp - 1){
+                    px = 0
+                }
+                if (py < 0){
+                    py = qp - 1
+                }
+                if (py > qp - 1){
+                    py = 0
+                }
+
+            
+            ctx.fillStyle = "grey"
+            ctx.fillRect( 0 , 0 , stage.width , stage.height)
+
+            ctx.fillStyle = "black"
+            ctx.fillRect(ax*lp, ay*lp, lp, lp)
+
+            ctx.fillStyle = "black"
+            for(var i = 0; i < trail.length ; i++){
+                ctx.fillRect(trail[i].x*lp, trail[i].y*lp, lp-1, lp-1)//pintura da cobra
+                if (trail[i].x == px && trail[i].y == px){
+                    vx = vy = 0
+                    tail = 5
+                }
+            
+            }
+            trail.push({x:px, y:py})
+            while (trail.length > tail){
+                trail.shift()
+            }
+            if (ax == px && ay == py){
+                tail++
+                ax = Math.floor(Math.random()*qp)
+                ay = Math.floor(Math.random()*qp)
+
+            }
+        }
+
+        function keyPush(event){
+            switch(event.keyCode){
+                case 65://left w
+                    vx = -vel
+                    vy = 0
+                break;
+
+                case 87://up
+                    vx = 0
+                    vy = -vel
+                break;
+
+                case 68://right
+                    vx = 0
+                    vx = vel
+                break;
+                case 83://down
+                    vx = 0
+                    vy = vel
+                break;
+
+                default:
+                break;
+            }
+        
+        }
+
+            }
+        
+    </script>
+    
+</body>
+</html>
